@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Past Papers | NIT Arunachal Pradesh</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="page2st.css">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <div class="header-container">
+        <div class="container logo">
+            <div>
+                <a href="https://www.nitap.ac.in/"><img src="logonitap-removebg-preview.png"></a>
+                <a href="https://www.nitap.ac.in/"><strong>राष्ट्रीय प्रौद्योगिकी संस्थान अरुणाचल प्रदेश</strong><br>
+                <strong>National Institute of Technology Arunachal Pradesh</strong></a>
+            </div>
+            <div class="header-right">
+                <span><a href="mailto:nitarunachal@nitap.ac.in" class="text-decoration-none text-light">📧 nitarunachal@nitap.ac.in</a></span>
+                <span>📞 0360-2284801</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form Section -->
+    <div class="container section text-white">
+        <h1 class="hero-title">Find Past Year Question Papers</h1>
+        <form class="mt-4">
+            <div class="mb-3">
+                <label for="branch" class="form-label">Select Branch:</label>
+                <select id="branch" name="branch" class="form-select">
+                    <option value="cse">Computer Science & Engineering (CSE)</option>
+                    <option value="ece">Electronics & Communication Engineering (ECE)</option>
+                    <option value="ee">Electrical Engineering (EE)</option>
+                    <option value="me">Mechanical Engineering (ME)</option>
+                    <option value="ce">Civil Engineering (CE)</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="semester" class="form-label">Select Semester:</label>
+                <select id="semester" name="semester" class="form-select">
+                    <option value="1">Semester 1</option>
+                    <option value="2">Semester 2</option>
+                    <option value="3">Semester 3</option>
+                    <option value="4">Semester 4</option>
+                    <option value="5">Semester 5</option>
+                    <option value="6">Semester 6</option>
+                    <option value="7">Semester 7</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="year" class="form-label">Select Year:</label>
+                <select id="year" name="year" class="form-select">
+                    <option value="2025">2025</option>
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                    
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-custom">Search</button>
+        </form>
+
+        <div id="results" class="mt-5"></div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container footer-columns">
+            <div class="footer-column">
+                <h5>Useful Links</h5>
+                <p>📖 <a href="#">eAcademics</a></p>
+                <p>📬 <a href="#">Webmail</a></p>
+                <p>📚 <a href="#">Moodle</a></p>
+                <p>📞 <a href="#">Emergency Contacts</a></p>
+            </div>
+            <div class="footer-column">
+                <h5>Feedback</h5>
+                <p>Please give us your suggestions and feedback.</p>
+                <p>📝 <a href="https://docs.google.com/forms/d/e/1FAIpQLScCq6YGD09eA2r3o9ewz723az-cQZzSLF_DpRgi-hrOflKUYw/viewform?usp=dialog">Click here</a></p>
+            </div>
+            <div class="footer-column">
+                <h5>Follow Us</h5>
+                <p>📘 <a href="#">Facebook</a> | 📸 <a href="#">Instagram</a> | 📧 <a href="#">Email</a></p>
+                <h6>Website Created and Maintained by:</h6>
+                <a href="https://www.linkedin.com/in/vinay-pal-849212334">💻 Vinay Pal</a><br>
+                <a href="https://www.linkedin.com/in/prateek-singh-490a08315">💻 Prateek Singh</a>
+                <p>&copy; STARS 2025. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+<script>
+
+document.querySelector("form").addEventListener("submit", function(e) {
+    e.preventDefault(); 
+
+    const branch = document.getElementById("branch").value;
+    const semester = document.getElementById("semester").value;
+    const year = document.getElementById("year").value;
+
+    fetch("data/papers.json")
+        .then(res => res.json())
+        .then(data => {
+            const results = document.getElementById("results");
+            
+            // Filter data based on selected values
+            const filtered = data.filter(paper => 
+                paper.branch === branch &&
+                paper.semester === semester &&
+                paper.year === year
+            );
+
+            if (filtered.length === 0) {
+                results.innerHTML = "<p>No papers found for the selected criteria.</p>";
+            } else {
+                results.innerHTML = filtered.map(paper => 
+                    `<a href="${paper.link}" target="_blank" class="btn btn-custom d-block my-2">${paper.title}</a>`
+                ).join("");
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            document.getElementById("results").innerHTML = "<p>Error loading papers.</p>";
+        });
+});
+</script>
+
+
+</html>
